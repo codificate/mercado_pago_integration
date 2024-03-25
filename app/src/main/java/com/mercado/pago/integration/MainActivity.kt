@@ -9,7 +9,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.launch
 
 private const val TAG = "MainActivity"
@@ -23,19 +24,21 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         lifecycleScope.launch {
-            viewModel.state.onEach { stateProvider ->
-                stateProvider.getPreferences()?.let { preferences ->
+            viewModel.preferencesState
+                .filterNotNull()
+                .collectLatest { preferences ->
                     val url = preferences.initPoint
                     val intent = CustomTabsIntent.Builder().build()
                     intent.launchUrl(this@MainActivity, Uri.parse(url))
                 }
 
-                stateProvider.getSubscription()?.let { subscription ->
+            viewModel.subscriptionState
+                .filterNotNull()
+                .collectLatest { subscription ->
                     val url = subscription.initPoint
                     val intent = CustomTabsIntent.Builder().build()
                     intent.launchUrl(this@MainActivity, Uri.parse(url))
                 }
-            }
         }
     }
 
