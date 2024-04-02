@@ -4,13 +4,23 @@ import com.mercado.pago.integration.core.data.model.request.PreferencesRequest
 import com.mercado.pago.integration.core.data.model.request.components.BackUrlsRequest
 import com.mercado.pago.integration.core.data.model.request.components.ItemRequest
 import com.mercado.pago.integration.core.data.model.request.SubscriptionRequest
+import com.mercado.pago.integration.core.data.model.request.components.AddressRequest
 import com.mercado.pago.integration.core.data.model.request.components.AutoRecurringRequest
+import com.mercado.pago.integration.core.data.model.request.components.IdentificationRequest
+import com.mercado.pago.integration.core.data.model.request.components.PayerRequest
+import com.mercado.pago.integration.core.data.model.request.components.PhoneRequest
 
 class MercadoPagoDataSource {
 
     companion object {
         val BODY_PREFERENCES = PreferencesRequest(
-            payerEmailRequest = "", //Your buyer user
+            payer = PayerRequest(
+                address = AddressRequest("conde", "1428", 2850),
+                identification = IdentificationRequest("DNI", "12234345"),
+                phone = PhoneRequest("+54", "1112233445"),
+                name = "Usuario MakiTEST",
+                email = "usuario@makitest.com"
+            ), //Your buyer user
             itemRequests = listOf(
                 ItemRequest(
                     titleRequest = "Learnings",

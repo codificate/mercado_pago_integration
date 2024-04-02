@@ -1,5 +1,6 @@
 package com.mercado.pago.integration.core.di.network
 
+import com.google.gson.GsonBuilder
 import com.mercado.pago.integration.BuildConfig
 import com.mercado.pago.integration.core.data.service.MercadoPagoApiClient
 import com.mercado.pago.integration.core.data.service.MercadoPagoApiService
@@ -46,6 +47,7 @@ object NetworkingApiModule {
         .addConverterFactory(GsonConverterFactory.create())
         .baseUrl(BuildConfig.BASE_URL)
         .client(okHttpClient)
+        .addConverterFactory(GsonConverterFactory.create(GsonBuilder().create()))
         .build()
 
     @Provides
